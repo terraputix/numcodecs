@@ -108,7 +108,10 @@ def ensure_contiguous_ndarray_like(buf, max_buffer_size=None, flatten=True) -> N
             # can flatten without copy
             arr = arr.reshape(-1, order="A")
     else:
-        raise ValueError("an array with contiguous memory is required")
+        arr = arr.copy()
+        if flatten:
+            # can flatten without copy
+            arr = arr.reshape(-1, order="A")
 
     if max_buffer_size is not None and arr.nbytes > max_buffer_size:
         msg = f"Codec does not support buffers of > {max_buffer_size} bytes"
